@@ -12,8 +12,10 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
+var version string
+
 func main() {
-	app := kingpin.New("cloud-connect", "CLI for managing cloud connect").DefaultEnvars()
+	app := kingpin.New("cloud-connect", "CLI for managing cloud connect").Version(version).DefaultEnvars()
 	cli.Setup(app, ec2Factory, cloudconnect.NewManager, os.Stdout)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 }

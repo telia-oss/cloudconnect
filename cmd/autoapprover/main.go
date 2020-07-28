@@ -17,8 +17,10 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
+var version string
+
 func main() {
-	app := kingpin.New("autoapprover", "A lambda handler for managing cloud connect").DefaultEnvars()
+	app := kingpin.New("autoapprover", "A lambda handler for managing cloud connect").Version(version).DefaultEnvars()
 	autoapprover.Setup(app, lambda.Start, awsClientFactory, cloudconnect.NewManager, loggerFactory)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 }
