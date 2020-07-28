@@ -21,3 +21,17 @@ jobs:
         with: { version: latest, args: release --rm-dist }
         env:
           GITHUB_TOKEN: ${{ secrets.GORELEASER_GITHUB_TOKEN }}
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      - name: Get version
+        id: version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
+      - name: Upload Lambda
+        run: |
+          aws s3 cp "dist/autoapprover-${VERSION}-linux-amd64.zip" "s3://telia-oss/autoapprover/v${VERSION}.zip" --acl public-read
+        env:
+          VERSION: ${{ steps.version.outputs.VERSION }}
