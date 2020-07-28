@@ -35,9 +35,7 @@ archives:
   - id: autoapprover
     builds:
       - autoapprover
-    format_overrides:
-      - goos: windows
-        format: zip
+    format: zip
     name_template: "autoapprover-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
 
 checksum:
