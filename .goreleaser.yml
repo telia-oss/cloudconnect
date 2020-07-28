@@ -59,6 +59,8 @@ brews:
     homepage: https://github.com/telia-oss/cloudconnect
     ids:
       - cloud-connect
+    install: |
+      bin.install "cloud-connect"
     test: |
       system "#{bin}/cloud-connect --version"
     tap:
