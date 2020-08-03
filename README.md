@@ -1,14 +1,21 @@
-## cloud-connect
+## cloudconnect
 
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/telia-oss/cloudconnect)
 [![latest release](https://img.shields.io/github/v/release/telia-oss/cloudconnect?style=flat-square)](https://github.com/telia-oss/cloudconnect/releases/latest)
 [![build status](https://img.shields.io/github/workflow/status/telia-oss/cloudconnect/test?label=build&logo=github&style=flat-square)](https://github.com/telia-oss/cloudconnect/actions?query=workflow%3Atest)
 [![code quality](https://goreportcard.com/badge/github.com/telia-oss/cloudconnect?style=flat-square)](https://goreportcard.com/report/github.com/telia-oss/cloudconnect)
 
-Cloud connect provides a CLI and Lambda function for managing CIDR allocations and attachments for a multi-tenant (and
-multi-region) setup of AWS Transit Gateway.
+Cloud connect provides a CLI (`cloud-connect`) and Lambda function (`autoapprover`) for managing CIDR allocations and 
+attachments for a multi-tenant (and multi-region) setup of AWS Transit Gateway. This is done using a YAML configuration
+that contains CIDR allocations (see [example/allocations.yml](./example/allocations.yml)) and using the `autoapprover` 
+to manage transit gateway attachments and routes.
 
 ## CLI
+
+#### Installation
+
+Use [homebrew](https://brew.sh/) to install the latest version on OS X and Linux: `brew install telia-oss/tap/cloud-connect`.
+Otherwise you can install `cloud-connect` by downloading it from the [releases](https://github.com/telia-oss/cloudconnect/releases).
 
 #### Usage
 
@@ -52,10 +59,30 @@ Commands:
 
 ## Autoapprover
 
+#### Installation
+
+You can download the latest version of `autoapprover` from the [releases](https://github.com/telia-oss/cloudconnect/releases),
+or you can use the pre-packaged zip files available from our public S3 bucket and reference it directly in your terraform:
+
+```hcl
+data "aws_region" "current" {}
+
+module "lambda" {
+  source  = "telia-oss/lambda/aws"
+  version = "3.0.0"
+
+  name_prefix = "autoapprover"
+  s3_bucket   = "telia-oss-${data.aws_region.current.name}"
+  s3_key      = "autoapprover/v0.2.0.zip"
+  handler     = "autoapprover"
+
+  ...
+}
+```
+
 #### Usage
 
-The autoapprover needs to be built with `task build` and then deployed for the respective environment under `terraform/<env>/autoapprover`. For
-development purposes it can be run locally like so:
+The `autoapprover` is a Lambda function, but can also be run locally for development purposes:
 
 ```bash
 $ autoapprover --help
@@ -73,7 +100,7 @@ Flags:
   --debug                        Enable debug logging.
 ```
 
-You can use `--local` and `--dry-run` to test the code locally without side effects.
+I.e. you can use `--local` and `--dry-run` to test the code locally without side effects.
 
 #### Environment variables
 

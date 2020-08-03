@@ -1,0 +1,17 @@
+gateways:
+  eu-west-1:
+    transit_gateway_id: tgw-0123
+    route_table_id: tgw-rtb-0123
+supernets:
+  - description: Carrier grade NAT range outlined in RFC6598.
+    cidrs:
+      eu-west-1:
+        - 100.96.0.0/16
+teams:
+  - team: Public cloud
+    accounts:
+      - name: telia-direct-connect-dev
+        id: "111122223333"
+        cidrs: 
+          eu-west-1:
+            - 100.96.0.0/24
