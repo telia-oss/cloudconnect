@@ -135,6 +135,31 @@ func TestPlan(t *testing.T) {
 			expectedSearchRouteCalls: 1,
 			propagatedRoute:          "10.1.2.0/25",
 			expectedAction:           cloudconnect.NoOp,
+		}, {
+			description: "no-op if propagation is rejected and no tag",
+			attachment: &cloudconnect.Attachment{
+				ID:    cloudconnect.AttachmentID("ID"),
+				Owner: targetOwner,
+				Type:  "vpc",
+				State: "rejected",
+				Tags:  nil,
+			},
+			expectedSearchRouteCalls: 0,
+			propagatedRoute:          "10.1.2.0/25",
+			expectedAction:           cloudconnect.NoOp,
+		},
+		{
+			description: "no-op if propagation is deleted and no tag",
+			attachment: &cloudconnect.Attachment{
+				ID:    cloudconnect.AttachmentID("ID"),
+				Owner: targetOwner,
+				Type:  "vpc",
+				State: "deleted",
+				Tags:  nil,
+			},
+			expectedSearchRouteCalls: 0,
+			propagatedRoute:          "10.1.2.0/25",
+			expectedAction:           cloudconnect.NoOp,
 		},
 	}
 

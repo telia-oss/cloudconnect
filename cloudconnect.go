@@ -138,6 +138,8 @@ func getChangeAction(m Manager, a *Attachment, allocation *Allocation, currentRe
 		if allocation != nil {
 			return ApproveAttachment, "account is allocated", nil
 		}
+
+		// This rejects (deletes) all pending allowed tgw-attachments, that have not been completed within 3 days, to attempt a retry the tgw-attachments need to be tried.
 		if a.Created.Before(time.Now().AddDate(0, 0, -3)) {
 			return RejectAttachment, "pending without allocation for >3 days", nil
 		}
@@ -165,10 +167,12 @@ func getChangeAction(m Manager, a *Attachment, allocation *Allocation, currentRe
 			}
 		}
 	}
-	nameTag, _ := a.Tags["Name"]
-	if nameTag != allocation.Name {
-		return TagAttachment, "name tag does not match allocation", nil
+	if nameTag, ok := a.Tags["Name"]; ok {
+		if nameTag != allocation.Name {
+			return TagAttachment, "name tag does not match allocation", nil
+		}
 	}
+
 	return NoOp, "", nil
 }
 
