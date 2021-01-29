@@ -73,7 +73,7 @@ module "lambda" {
 
   name_prefix = "autoapprover"
   s3_bucket   = "telia-oss-${data.aws_region.current.name}"
-  s3_key      = "autoapprover/v0.2.0.zip"
+  s3_key      = "autoapprover/v0.2.1.zip"
   handler     = "autoapprover"
 
   ...
