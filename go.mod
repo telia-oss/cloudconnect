@@ -7,7 +7,7 @@ require (
 	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
 	github.com/apparentlymart/go-cidr v1.1.0
 	github.com/aws/aws-lambda-go v1.18.0
-	github.com/aws/aws-sdk-go v1.33.12
+	github.com/aws/aws-sdk-go v1.34.0
 	github.com/maxbrunsfeld/counterfeiter/v6 v6.2.3
 	github.com/stretchr/testify v1.5.1
 	go.uber.org/zap v1.15.0
